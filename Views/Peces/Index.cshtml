@@ -1,0 +1,53 @@
+@model List<Pez>
+@{
+    ViewData["Title"] = "Mis peces";
+    string? filtroActual = ViewBag.TipoAgua;
+}
+
+<h1 id="titulo">Peces del acuario</h1>
+
+<form method="get" asp-action="Index" class="row g-2 mb-3">
+    <div class="col-12 col-md-4">
+        <select name="tipoAgua" class="form-select">
+            <option value="">Todos</option>
+            <option value="Agua dulce" selected="@(filtroActual == "Agua dulce")">Agua dulce</option>
+            <option value="Agua salada" selected="@(filtroActual == "Agua salada")">Agua salada</option>
+        </select>
+    </div>
+    <div class="col-12 col-md-2">
+        <button type="submit" class="btn btn-primary">Filtrar</button>
+    </div>
+</form>
+
+<p>Total de peces mostrados: <strong>@ViewBag.TotalPeces</strong></p>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">No hay peces registrados.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Tipo de agua</th>
+                    <th>Cantidad</th>
+                    <th>Fecha de registro</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pez in Model)
+                {
+                    <tr>
+                        <td>@pez.Nombre</td>
+                        <td>@pez.TipoAgua</td>
+                        <td>@pez.Cantidad</td>
+                        <td>@pez.FechaRegistro.ToString("dd/MM/yyyy HH:mm")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
